@@ -1,16 +1,14 @@
 <template>
     <div>
-        <h1 class="text-danger">Hello I am from Vuejs app</h1>
-        <h1>Hello I am from Vuejs app</h1>
-        <h1>Hello I am from Vuejs app</h1>
-        <h1>Hello I am from Vuejs app</h1>
-        <h1>Hello I am from Vuejs app</h1>
-        <h1>Hello I am from Vuejs app</h1>
-        <h1>Hello I am from Vuejs app</h1>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
 
-        <router-link :to="{ name: 'Add'}">Add New</router-link>
-
-        <router-view></router-view>
+                    <router-view></router-view>
+                    
+                </div>
+            </div>
+        </div>
 
     </div>
 </template>
