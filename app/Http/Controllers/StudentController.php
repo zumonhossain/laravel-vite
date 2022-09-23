@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+use App\Http\Requests\StudentRequest;
 use App\Http\Resources\StudentResource;
 use App\Models\Student;
 use Illuminate\Http\Request;
@@ -21,8 +22,9 @@ class StudentController extends Controller{
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request){
-        //
+    public function store(StudentRequest $request){
+        $student = Student::create($request->validated());
+        return new StudentResource($student);
     }
 
     /**
@@ -32,7 +34,7 @@ class StudentController extends Controller{
      * @return \Illuminate\Http\Response
      */
     public function show(Student $student){
-        //
+        return new StudentResource($student);
     }
 
     /**
@@ -42,8 +44,9 @@ class StudentController extends Controller{
      * @param  \App\Models\Student  $student
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Student $student){
-        //
+    public function update(StudentRequest $request, Student $student){
+        $student->update($request->validated());
+        return new StudentResource($student);
     }
 
     /**
@@ -53,6 +56,7 @@ class StudentController extends Controller{
      * @return \Illuminate\Http\Response
      */
     public function destroy(Student $student){
-        //
+        $student->delete();
+        return response()->json(['message' => 'data deleted'], 200);
     }
 }
