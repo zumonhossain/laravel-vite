@@ -8,21 +8,32 @@
                             <router-link :to="{ name: 'List'}">All List</router-link>
                         </h5>
                         <div class="card-body">
-                            <form>
+                            <form @submit.prevent="storeData">
                                 <div class="form-group">
-                                    <label for="exampleInputEmail1">Email address</label>
-                                    <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email">
-                                    <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+                                    <label>Name</label>
+                                    <input type="text" v-model="form.name" class="form-control" placeholder="Enter name">
+                                    <span v-if="errors.name" class="text-danger"> {{ errors.name[0] }} </span>
                                 </div>
                                 <div class="form-group">
-                                    <label for="exampleInputPassword1">Password</label>
-                                    <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+                                    <label>Email</label>
+                                    <input type="email" v-model="form.email" class="form-control" placeholder="Enter email">
+                                    <span v-if="errors.email" class="text-danger"> {{ errors.email[0] }} </span>
                                 </div>
-                                <div class="form-check">
-                                    <input type="checkbox" class="form-check-input" id="exampleCheck1">
-                                    <label class="form-check-label" for="exampleCheck1">Check me out</label>
+                                <div class="form-group">
+                                    <label>Phone</label>
+                                    <input type="text" v-model="form.phone" class="form-control" placeholder="Enter phone">
+                                    <span v-if="errors.phone" class="text-danger"> {{ errors.phone[0] }} </span>
                                 </div>
-                                <button type="submit" class="btn btn-primary">Submit</button>
+                                <div class="form-group">
+                                    <label>Gender</label>
+                                    <select v-model="form.gender" class="form-control">
+                                        <option value="">Select One</option>
+                                        <option value="male">Male</option>
+                                        <option value="female">Female</option>
+                                    </select>
+                                    <span v-if="errors.gender" class="text-danger"> {{ errors.gender[0] }} </span>
+                                </div>
+                                <button type="submit" class="btn btn-primary mt-3">Submit</button>
                             </form>
                         </div>
                     </div>
@@ -34,7 +45,39 @@
 
 <script>
 export default {
+    data(){
+        return{
+            form: {
+                name: "",
+                email: "",
+                phone: "",
+                gender: "",
+            },
 
+            errors:{},
+
+        }
+    },
+
+    methods:{
+        storeData(){
+            axios
+            .post("/api/student",this.form)
+
+            .then((res) => {
+
+                if(res.status === 201){
+                    this.form = "";
+                    this.errors = "";
+                }
+
+            })
+            
+            .catch((err) => {
+                this.errors = err.response.data.errors;
+            });
+        },
+    },
 }
 </script>
 
