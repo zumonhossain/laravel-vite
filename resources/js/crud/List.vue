@@ -20,7 +20,10 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr v-for="student,index in students.data" :key="index">
+                                    <tr v-for="(
+                                            student, index
+                                        ) in students.data"
+                                        :key="index">
                                         <th scope="row">{{ ++ index }}</th>
                                         <td>{{ student.name }}</td>
                                         <td>{{ student.email }}</td>
@@ -28,7 +31,7 @@
                                         <td>{{ student.gender }}</td>
                                         <td>
                                             <a href="#" class="btn btn-sm btn-info">Edit</a>
-                                            <a href="#" class="btn btn-sm btn-danger">Delete</a>
+                                            <a href="#" class="btn btn-sm btn-danger" @click.prevent="destroy(student.id)">Delete</a>
                                         </td>
                                     </tr>
                                 </tbody>
@@ -61,8 +64,25 @@ export default {
             }).catch((err) => {
 
             });
+        },
+
+        destroy(id){
+            if (!window.confirm("Are You Shure To Delete ?")) {
+                return;
+            }
+
+            axios.delete("/api/student/"+id)
+            .then((res) => {
+                if(res.status === 200) {
+                    this.fetchData();
+                }
+            }).catch((err) => {
+
+            });
+
         }
-    }
+        
+    },
 
 }
 </script>
