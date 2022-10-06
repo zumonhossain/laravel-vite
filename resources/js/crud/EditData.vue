@@ -8,7 +8,7 @@
                             <router-link :to="{ name: 'List'}">All List</router-link>
                         </h5>
                         <div class="card-body">
-                            <form @submit.prevent="storeData">
+                            <form @submit.prevent="updateData">
                                 <div class="form-group">
                                     <label>Name</label>
                                     <input type="text" v-model="form.name" class="form-control" placeholder="Enter name">
@@ -72,6 +72,21 @@ export default {
                     this.form = res.data.data;
                 }
                 console.log(res);
+            })
+            .catch((err) => {
+                this.errors = err.response.data.errors;
+            });
+        },
+
+        updateData() {
+            axios
+            .put("/api/student/" + this.$route.params.id, this.form)
+            .then((res) => {
+                if (res.status === 200) {
+                    this.form = "";
+                    this.errors = "";
+                    this.$router.push({name: 'List'});
+                }
             })
             .catch((err) => {
                 this.errors = err.response.data.errors;
